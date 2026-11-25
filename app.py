@@ -6,7 +6,7 @@ visits = 0
 
 @app.route("/")
 def home():
-    return jsonify(message="DockLab is alive! 🐳")
+    return jsonify(message="DockerLab is alive! 🐳")
 
 @app.route("/health")
 def health():
