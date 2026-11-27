@@ -2,11 +2,22 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-visits = 0
+DATA_FILE = "/data/visits.txt"
+
+def read_visits():
+    try:
+        with open(DATA_FILE) as f:
+            return int(f.read())
+    except FileNotFoundError:
+        return 0
+
+def write_visits(n):
+    with open(DATA_FILE, "w") as f:
+        f.write(str(n))
 
 @app.route("/")
 def home():
-    return jsonify(message="DockerLab is alive! 🐳")
+    return jsonify(message="DockLab is alive! 🐳")
 
 @app.route("/health")
 def health():
@@ -14,9 +25,9 @@ def health():
 
 @app.route("/visits")
 def count():
-    global visits
-    visits = visits + 1
-    return jsonify(visits=visits)
+    n = read_visits() + 1
+    write_visits(n)
+    return jsonify(visits=n)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
